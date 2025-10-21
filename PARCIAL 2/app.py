@@ -19,68 +19,92 @@ def init_db():
     
     # Crear tabla de usuarios de ejemplo
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS usuarios (
+        CREATE TABLE IF NOT EXISTS Usuario (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nombre TEXT NOT NULL,
+            documento INTEGER UNIQUE NOT NULL,     
             email TEXT UNIQUE NOT NULL,
-            edad INTEGER,
+            telefono INTEGER UNIQUE,
+            pais TEXT,
+            ciudad TEXT,
+            rol TEXT NOT NULL,
             fecha_registro DATE DEFAULT CURRENT_DATE
         )
     ''')
     
-    # Crear tabla de productos de ejemplo
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS productos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nombre TEXT NOT NULL,
-            precio REAL NOT NULL,
-            categoria TEXT,
-            stock INTEGER DEFAULT 0
-        )
-    ''')
+    # # Crear tabla de productos de ejemplo
+    # cursor.execute('''
+    #     CREATE TABLE IF NOT EXISTS productos (
+    #         id INTEGER PRIMARY KEY AUTOINCREMENT,
+    #         nombre TEXT NOT NULL,
+    #         precio REAL NOT NULL,
+    #         categoria TEXT,
+    #         stock INTEGER DEFAULT 0
+    #     )
+    # ''')
     
-    # Crear tabla de ventas de ejemplo
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS ventas (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            usuario_id INTEGER,
-            producto_id INTEGER,
-            cantidad INTEGER,
-            fecha_venta DATETIME DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (usuario_id) REFERENCES usuarios (id),
-            FOREIGN KEY (producto_id) REFERENCES productos (id)
-        )
-    ''')
+    # # Crear tabla de ventas de ejemplo
+    # cursor.execute('''
+    #     CREATE TABLE IF NOT EXISTS ventas (
+    #         id INTEGER PRIMARY KEY AUTOINCREMENT,
+    #         usuario_id INTEGER,
+    #         producto_id INTEGER,
+    #         cantidad INTEGER,
+    #         fecha_venta DATETIME DEFAULT CURRENT_TIMESTAMP,
+    #         FOREIGN KEY (usuario_id) REFERENCES usuarios (id),
+    #         FOREIGN KEY (producto_id) REFERENCES productos (id)
+    #     )
+    # ''')
     
     # Insertar datos de ejemplo si no existen
-    cursor.execute('SELECT COUNT(*) FROM usuarios')
+    cursor.execute('SELECT COUNT(*) FROM Usuario')
     if cursor.fetchone()[0] == 0:
         usuarios_ejemplo = [
-            ('Juan Pérez', 'juan@email.com', 28),
-            ('María García', 'maria@email.com', 34),
-            ('Carlos López', 'carlos@email.com', 22),
-            ('Ana Martín', 'ana@email.com', 31),
-            ('Luis Rodríguez', 'luis@email.com', 26)
+("Alexis", 13364758, "aguilanocturna@gmail.com", 3124456, "Rusia", "Moscu", 1),
+("María", 24875932, "maria.lopez@mail.com", 3159874, "España", "Madrid", 2),
+("John", 98765432, "john.smith@gmail.com", 4123678, "EEUU", "Nueva York", 2),
+("Lucía", 45321687, "lucia.mendez@hotmail.com", 3178456, "México", "Guadalajara", 2),
+("Carlos", 76234981, "carlos.ruiz@mail.com", 3201987, "Colombia", "Bogotá", 1),
+("Anna", 33451298, "anna.petrov@rambler.ru", 4987632, "Rusia", "San Petersburgo", 2),
+("Taro", 11324567, "taro.yamamoto@yahoo.jp", 5609823, "Japón", "Tokio", 1),
+("Laura", 85236974, "laura.gomez@gmail.com", 3187654, "Argentina", "Buenos Aires", 2),
+("Pierre", 98741236, "pierre.dupont@orange.fr", 4456123, "Francia", "París", 1),
+("Fatima", 67549812, "fatima.hassan@gmail.com", 5541098, "Marruecos", "Casablanca", 2),
+("Hans", 74123659, "hans.muller@web.de", 4412987, "Alemania", "Berlín", 1),
+("Giulia", 56413287, "giulia.rossi@mail.it", 4823761, "Italia", "Roma", 2),
+("David", 95231478, "david.brown@gmail.com", 4032159, "EEUU", "Los Ángeles", 2),
+("Sofía", 31245987, "sofia.diaz@hotmail.com", 3167542, "Chile", "Santiago", 2),
+("Ahmed", 86543219, "ahmed.farouk@outlook.com", 5092381, "Egipto", "El Cairo", 1),
+("Ingrid", 74129536, "ingrid.olsen@mail.no", 4523876, "Noruega", "Oslo", 2),
+("Pedro", 65478912, "pedro.alvarez@gmail.com", 3198476, "Perú", "Lima", 1),
+("Olga", 23147896, "olga.kuznetsova@rambler.ru", 4992134, "Rusia", "Ekaterimburgo",1),
+("Chen", 87654321, "chen.li@mail.cn", 5321498, "China", "Pekín", 1),
+("Elena", 49563217, "elena.popescu@yahoo.ro", 4762398, "Rumanía", "Bucarest", 2),
+("Miguel", 52147893, "miguel.hernandez@gmail.com", 3148597, "México", "Monterrey", 1),
+("Nina", 64321985, "nina.schmidt@web.de", 4420198, "Alemania", "Múnich", 2),
+("Omar", 74213589, "omar.khan@mail.pk", 5076312, "Pakistán", "Lahore", 1),
+("Camila", 33451267, "camila.fernandez@hotmail.com", 3128974, "Chile", "Valparaíso", 2),
+("Yuri", 99874563, "yuri.ivanov@gmail.com", 4987321, "Rusia", "Moscu", 1)
         ]
-        cursor.executemany('INSERT INTO usuarios (nombre, email, edad) VALUES (?, ?, ?)', usuarios_ejemplo)
+        cursor.executemany('INSERT INTO Usuario (nombre, documento, email, telefono, pais, ciudad, rol) VALUES (?, ?, ?, ?, ?, ?, ?)', usuarios_ejemplo)
         
-        productos_ejemplo = [
-            ('Laptop', 999.99, 'Electrónicos', 15),
-            ('Mouse', 25.50, 'Accesorios', 50),
-            ('Teclado', 45.00, 'Accesorios', 30),
-            ('Monitor', 299.99, 'Electrónicos', 20),
-            ('Silla Gaming', 199.99, 'Muebles', 8)
-        ]
-        cursor.executemany('INSERT INTO productos (nombre, precio, categoria, stock) VALUES (?, ?, ?, ?)', productos_ejemplo)
+        # productos_ejemplo = [
+        #     ('Laptop', 999.99, 'Electrónicos', 15),
+        #     ('Mouse', 25.50, 'Accesorios', 50),
+        #     ('Teclado', 45.00, 'Accesorios', 30),
+        #     ('Monitor', 299.99, 'Electrónicos', 20),
+        #     ('Silla Gaming', 199.99, 'Muebles', 8)
+        # ]
+        # cursor.executemany('INSERT INTO productos (nombre, precio, categoria, stock) VALUES (?, ?, ?, ?)', productos_ejemplo)
         
-        ventas_ejemplo = [
-            (1, 1, 1),
-            (2, 2, 2),
-            (1, 3, 1),
-            (3, 1, 1),
-            (4, 4, 1)
-        ]
-        cursor.executemany('INSERT INTO ventas (usuario_id, producto_id, cantidad) VALUES (?, ?, ?)', ventas_ejemplo)
+        # ventas_ejemplo = [
+        #     (1, 1, 1),
+        #     (2, 2, 2),
+        #     (1, 3, 1),
+        #     (3, 1, 1),
+        #     (4, 4, 1)
+        # ]
+        # cursor.executemany('INSERT INTO ventas (usuario_id, producto_id, cantidad) VALUES (?, ?, ?)', ventas_ejemplo)
     
     conn.commit()
     conn.close()

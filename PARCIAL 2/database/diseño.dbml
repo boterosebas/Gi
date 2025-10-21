@@ -1,0 +1,112 @@
+Table Producto {
+    id serial [pk, increment]
+    nombre_producto varchar(100) [not null]
+    categoria varchar(50) [not null]
+    talla varchar(50) [not null]
+    color varchar(50) [not null]
+    precio_product decimal
+    marca varchar(100)
+}
+
+Table Tienda {
+    id serial [pk, increment]
+    nombre_tienda varchar(100) [not null, unique]
+    tipo_tienda varchar(50)
+    ubicacion varchar(200)
+}
+
+Table Usuario {
+    id serial [pk, increment]
+    nombre_cliente varchar(200) [not null]
+    documento integer [not null, unique]
+    email varchar(200) [not null, unique]
+    telefono varchar(200) [not null]
+    pais varchar(100) [not null]
+    ciudad varchar(100) [not null]
+    rol integer [not null]
+}
+
+Table Proveedor {
+    id serial [pk, increment]
+    id_proveedor integer [not null, unique]
+    tipo_material varchar(200) [not null]
+}
+Ref: Usuario.id - Proveedor.id_proveedor
+
+Table OrdenDeCompra {
+    id serial [pk, increment]
+    id_proveedor integer [not null]
+    fecha timestamp
+    estado varchar(50) [not null]
+    id_producto integer [not null]
+    cantidad integer [not null]
+}
+
+Ref: Proveedor.id_proveedor < OrdenDeCompra.id_proveedor        // Un proveedor tiene muchas órdenes de compra
+Ref: Producto.id < OrdenDeCompra.id_producto          // Un producto puede estar en muchas órdenes de compra
+
+Table Inventario {
+    id serial [pk, increment]
+    id_producto integer
+    id_tienda integer
+    cantidad integer [not null]
+    fecha_entrada timestamp
+}
+
+Ref: Producto.id < Inventario.id_producto             // Un producto puede estar en muchos inventarios
+Ref: Tienda.id < Inventario.id_tienda                 // Una tienda tiene un inventario
+
+Table Venta {
+    id serial [pk, increment]
+    id_cliente integer
+    id_tienda integer
+    fecha_venta timestamp
+    metodo_pago varchar(30) [not null]
+    valor_total decimal
+}
+
+Ref: Usuario.id < Venta.id_cliente                    // Un cliente puede tener muchas ventas
+Ref: Tienda.id < Venta.id_tienda                      // Una tienda puede tener muchas ventas
+
+Table DetalleVenta {
+    id serial [pk, increment]
+    id_venta integer
+    id_producto integer
+    cantidad integer
+    precio_unitario decimal
+}
+
+Ref: Venta.id < DetalleVenta.id_venta                 // Una venta tiene muchos detalles
+Ref: Producto.id < DetalleVenta.id_producto           // Un producto puede estar en muchos detalles de venta
+
+Table Envio {
+    id serial [pk, increment]
+    id_venta integer
+    transportadora varchar(200) [not null]
+    numero_guia varchar(50) [not null, unique]
+    fecha_envio timestamp [not null] 
+}
+
+Ref: Venta.id < Envio.id_venta                        // Una venta puede tener un envío
+
+Table Factura {
+    id serial [pk, increment]
+    id_venta integer
+    valor_total decimal
+    moneda varchar(50) [not null]
+    impuestos decimal
+    descuentos decimal
+    fecha_emision timestamp
+}
+
+Ref: Venta.id < Factura.id_venta                      // Una venta tiene una factura
+
+Table Pagos {
+    id serial [pk, increment]
+    id_factura integer
+    metodo_pago varchar(50) [not null]
+    estado varchar(50) [not null]
+}
+
+Ref: Factura.id < Pagos.id_factura                    // Una factura puede tener varios pagos
+                       // Una venta puede tener varios pagos
