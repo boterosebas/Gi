@@ -40,7 +40,7 @@ def init_db():
             talla TEXT,
             color TEXT,
             precio REAL NOT NULL,
-            marca TEXT,
+            marca TEXT
         )
     ''')
 
@@ -49,7 +49,7 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
            id_producto INTEGER NOT NULL,
             cantidad INTEGER NOT NULL,
-            fecha_actualizacion TEXT,
+            fecha_actualizacion TEXT
         )
     ''')
 
@@ -150,7 +150,7 @@ def init_db():
             (26, "2025-12-01")
            
         ]
-        cursor.executemany('INSERT INTO Inventario (id_producto, cantidad,) VALUES (?, ?)', inventarios_ejemplo)    
+        cursor.executemany('INSERT INTO Inventario (id_producto, cantidad) VALUES (?, ?)', inventarios_ejemplo)    
     
     conn.commit()
     conn.close()
