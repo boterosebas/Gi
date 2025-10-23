@@ -45,17 +45,13 @@ def init_db():
     ''')
 
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Inventario (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-           id_producto INTEGER NOT NULL,
-            cantidad INTEGER NOT NULL,
-            fecha_actualizacion TEXT
-        )
-    ''')
+    CREATE TABLE IF NOT EXISTS Inventario (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        cantidad INTEGER NOT NULL,
+        fecha_actualizacion TEXT
+    )
+''')
 
-
-
-  
     # Insertar datos de ejemplo si no existen
     cursor.execute('SELECT COUNT(*) FROM Usuario')
     if cursor.fetchone()[0] == 0:
@@ -148,9 +144,10 @@ def init_db():
             (19, "2025-11-02"),
             (84, "2025-11-10"),
             (26, "2025-12-01")
-           
         ]
-        cursor.executemany('INSERT INTO Inventario (id_producto, cantidad) VALUES (?, ?)', inventarios_ejemplo)    
+        cursor.executemany('INSERT INTO Inventario (cantidad, fecha_actualizacion) VALUES (?, ?)', inventarios_ejemplo)
+
+
     
     conn.commit()
     conn.close()
